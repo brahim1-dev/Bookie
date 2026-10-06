@@ -21,6 +21,10 @@ const bookSchema = mongoose.Schema({
       type:String,
       required: false,
     },
+    downloadLink:{
+      type:String,
+      required: false,
+    },
   },{
     timestamp:true
   }
