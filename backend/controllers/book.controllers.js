@@ -4,14 +4,29 @@ import Book from "../models/book.model.js"
 
 
 //Get all book 
-export const getAllBooks = (req, res)=>{
-  res.send("All Books")
+export const getAllBooks = async (req, res)=>{
+  // res.send("All Books")
+  try {
+    const books = await Book.find()
+    res.status(200).json(books)
+  } catch (error) {
+    res.status(500).json({message:error.message})
+  }
 }
 
 
 //Getting Single Book
-export const getSingleBook = (req, res)=>{
-  res.send("Get Book by id")
+export const getSingleBook =async (req, res)=>{
+  // res.send("Get Book by id")
+  try {
+    const book = await Book.findById(req.params.id)
+    if(!book){
+      return res.status(404).json({message:error.message})
+    }
+    res.status(200).json(book)
+  } catch (error) {
+    res.status(500).json({message: error.message})
+  }
 }
 
 
