@@ -55,12 +55,35 @@ export const postBook = async (req, res)=>{
 
 
 //Update Single Book
-export const putBook = (req, res)=>{
-  res.send("Update a Book ")
+export const putBook = async(req, res)=>{
+  // res.send("Update a Book ")
+   try {
+    const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, {
+      returnDocument: 'after',
+      runValidators:true
+    })
+    if(!updatedBook){
+      return res.status(404).json({ message: "Book Not Found" });
+    }
+    res.status(200).json(updatedBook)
+  } catch (error) {
+    res.status(500).json({message:error.message})
+  }
 }
 
 
 //Delete  Book 
-export const deleteBook =(req, res)=>{
-  res.send("Delete  Book By id ")
+export const deleteBook =async(req, res)=>{
+  // res.send("Delete  Book By id ")
+  try {
+    const delBook = await Book.findById(req.params.id)
+    if(!delBook){
+     return res.status(404).json({ message: "Book Not Found" });
+    }
+    await delBook.deleteOne()
+    res.status(200).json({ message: "Book Deleted successfully", _id:delBook._id });
+
+  } catch (error) {
+    res.status(500).json({message:error.message})
+  }
 }
