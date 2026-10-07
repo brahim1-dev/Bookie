@@ -8,9 +8,8 @@ import { connectDB } from './config/db.js';
 dotenv.config()
 const app = express();
 
-// app.get("/", (req, res)=>{
-//   res.json({message: `the server in running on ${PORT}`})
-// })
+app.use(express.json())
+
 
 app.use("/api/books/", bookRouter)
 
