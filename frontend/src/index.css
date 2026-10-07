@@ -1,1 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @import "tailwindcss";
+
+@theme {
+    --color-brand-50: #f0fdfa;
+    --color-brand-100: #ccfbf1;
+    --color-brand-200: #99f6e4;
+    --color-brand-300: #5eead4;
+    --color-brand-400: #2dd4bf;
+    --color-brand-500: #14b8a6;
+    --color-brand-600: #0d9488;
+    --color-brand-700: #0f766e;
+    --color-brand-800: #115e59;
+    --color-brand-900: #134e4a;
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@layer base {
+    body {
+        @apply bg-gray-50 text-gray-900 font-sans antialiased;
+    }
+}
+
+@layer components {
+    .btn {
+        @apply inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200;
+    }
+
+    .btn-primary {
+        @apply bg-brand-600 text-white hover:bg-brand-700 focus:ring-brand-500;
+    }
+
+    .btn-secondary {
+        @apply bg-white text-gray-700 border-gray-300 hover:bg-gray-50 focus:ring-brand-500;
+    }
+
+    .btn-danger {
+        @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
+    }
+
+    .input-field {
+        @apply w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 bg-white text-gray-900 sm:text-sm transition-colors duration-200 outline-none;
+    }
+
+    .card {
+        @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-md;
+    }
+}
