@@ -1,7 +1,22 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import Home from "./pages/Home"
+import AddBook from "./pages/AddBook"
+import EditBook from "./pages/EditBook"
+import BookDetails from "./pages/BookDetails"
+
+
+
 
 const App = () => {
   return (
-    <div className="text-center bg-blue-400">App</div>
+    <Router>
+      <Routes>
+        <Route path="/"element={<Home/>}/>
+        <Route path="/add-book"element={<AddBook/>}/>
+        <Route path="/edit/:id"element={<EditBook/>}/>
+        <Route path="/book/:id"element={<BookDetails/>}/>
+      </Routes>
+    </Router>
   )
 }
 
