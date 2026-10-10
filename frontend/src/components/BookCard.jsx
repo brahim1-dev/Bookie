@@ -1,11 +1,11 @@
-import { BookText, Download, Target, Edit, Trash2 } from "lucide-react"
+import { BookText, Download, Edit, Trash2 } from "lucide-react"
 import { Link } from "react-router-dom"
 
 const BookCard = ({book}) => {
   return (
     <div className="card flex flex-col group relative bg-white">
       {/* Cover Image */}
-      <div className="h-48 w-full bg-gray-100 flex-shrink-0 ove  rflow-hidden relative">
+      <div className="h-48 w-full bg-gray-100 flex-shrink-0 overflow-hidden relative">
         {
           book.coverImage?(
           <img className="w-full h-full object-contain bg-white p-2 transition-transform duration-500 group-hover:scale-105" src={book.coverImage} alt="Cover of book"/>):(
@@ -32,7 +32,7 @@ const BookCard = ({book}) => {
           Details
           </Link>
           {
-            book.downloadLink &&( <a className="text-gray-600 hover:text-brand-600 text-sm font-medium flex items-center gap-1 transition-colors" href={book.downloadLink} Target="_blank" rel="noopener noreferrer"> 
+            book.downloadLink &&( <a className="text-gray-600 hover:text-brand-600 text-sm font-medium flex items-center gap-1 transition-colors" href={book.downloadLink} target="_blank" rel="noopener noreferrer"> 
               <Download size={16}/>Download</a>)
           }
         </div>
