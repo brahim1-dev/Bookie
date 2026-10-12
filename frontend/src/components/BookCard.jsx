@@ -25,23 +25,23 @@ const BookCard = ({book}) => {
         <p className="text-gray-500 font-medium mb-3 text-sm">By<span>{book.author}</span></p>
         <p className="text-gray-600 text-sm line-clamp-3 mb-4">By{book.description}</p>
       </div>
-      <div className="px-5 py-4 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-4">
-          <Link to={`/book/${book._id}`} className="text-brand-600 hover:text-brand-700 text-sm font-medium flex items-center gap-1 transition-colors">
-          <BookText size={16}/>
+      <div className="px-3 py-3 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between gap-1">
+        <div className="flex min-w-0 items-center gap-2">
+          <Link to={`/book/${book._id}`} className="whitespace-nowrap text-brand-600 hover:text-brand-700 text-xs font-medium flex items-center gap-1 transition-colors">
+          <BookText size={14}/>
           Details
           </Link>
           {
-            book.downloadLink &&( <a className="text-gray-600 hover:text-brand-600 text-sm font-medium flex items-center gap-1 transition-colors" href={book.downloadLink} target="_blank" rel="noopener noreferrer"> 
-              <Download size={16}/>Download</a>)
+            book.downloadLink &&( <a className="whitespace-nowrap text-gray-600 hover:text-brand-600 text-xs font-medium flex items-center gap-1 transition-colors" href={book.downloadLink} target="_blank" rel="noopener noreferrer"> 
+              <Download size={14}/>Download</a>)
           }
         </div>
-        <div className="flex items-center gap-2">
-          <Link className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-            <Edit size={18}></Edit>
+        <div className="flex shrink-0 items-center gap-0.5">
+          <Link className="shrink-0 p-1 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+            <Edit size={14}></Edit>
           </Link>
-          <button className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-            <Trash2 size={18}></Trash2>
+          <button className="shrink-0 p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+            <Trash2 size={14}></Trash2>
           </button>
         </div>
       </div>
