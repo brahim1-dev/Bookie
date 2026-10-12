@@ -2,7 +2,7 @@
 
 Bookie is a full-stack web application for browsing a personal library of books. It provides a React interface for viewing a book collection and individual book details, backed by an Express API and MongoDB.
 
-> **Project status:** Book listing and book-detail pages are implemented. The API supports creating, updating, and deleting books; the current Add Book and Edit Book frontend pages are placeholders, and delete/edit controls on book cards are not wired up yet.
+> **Project status:** The book list and book-detail pages are implemented. The Add Book page has a form for book information, but submitting it is not implemented yet. The Edit Book page and the edit/delete controls on book cards are not wired up. The backend API supports create, update, and delete operations.
 
 ## Contents
 
@@ -23,9 +23,10 @@ Bookie is a full-stack web application for browsing a personal library of books.
 - Browse the book collection in a responsive card layout.
 - Open a book's details, including its title, author, price, cover image, description, and date added.
 - Open an optional download link for a book.
+- View an Add Book form with fields for the title, author, price, description, cover image URL, and download link.
 - REST API endpoints for listing, retrieving, creating, updating, and deleting books.
 - MongoDB persistence through Mongoose.
-- Loading, empty-library, and API-error states on the home page.
+- Loading, empty-library, and API-error states on the home page, including a retry action when loading fails.
 
 ## Technology
 
@@ -136,9 +137,9 @@ Bookie/
 │   └── server.js        # API server entry point
 ├── frontend/
 │   ├── src/
-│   │   ├── components/  # Shared layout and book card
-│   │   ├── pages/       # Home, book details, add, and edit pages
-│   │   └── redux/       # Store and book API state
+│   │   ├── components/  # Shared layout, book card, and book form
+│   │   ├── pages/       # Home, book details, add-book, and edit-book pages
+│   │   └── redux/       # Store and asynchronous book API state
 │   └── package.json
 ├── .env                 # Local configuration (create this; do not commit)
 └── package.json         # Backend scripts and dependencies
@@ -161,7 +162,7 @@ Run these from the repository root unless noted otherwise.
 
 - MongoDB must be available and `MONGO_URI` must be configured before starting the backend.
 - The frontend's API base URL is currently set to `http://localhost:5000/api/books` in `frontend/src/redux/API/bookSlice.js`.
-- Add Book and Edit Book are currently placeholder pages. Although corresponding API endpoints exist, the full create/edit/delete user interface is not yet implemented.
+- The Add Book page currently displays the book form, but the form does not yet submit data to the API. The Edit Book page is still a placeholder, and the edit/delete controls on book cards are not connected. The backend has create, update, and delete endpoints, but the full create/edit/delete interface is not yet implemented.
 - Download URLs point to external resources. Whether a download opens or is saved depends on the URL and the hosting provider.
 
 ## GitHub
