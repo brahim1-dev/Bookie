@@ -1,19 +1,24 @@
 import { ArrowLeft } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import BookForm from "../components/BookForm"
 import {useDispatch, useSelector} from 'react-redux'
 import {createBook} from '../redux/API/bookSlice'
+import toast from "react-hot-toast"
 
 const AddBook = () => {
   const dispatch = useDispatch()
   const {isLoading} = useSelector((state)=>state.book)
+  const navigate = useNavigate()
 
-  const handleSubmit = async(BookData)=>{
-    const resultAction = await dispatch(createBook(BookData))
+  const handleSubmit = async(bookData)=>{
+    const resultAction = await dispatch(createBook(bookData))
     if(createBook.fulfilled.match(resultAction)){
-      alert("Book Saved")
+      // alert("Book Saved")
+      toast.success("Book Saved Successfully")
+      navigate('/')
     }else{
-      alert(resultAction.payload)
+      // alert(resultAction.payload)
+      toast.error(resultAction.payload || 'Failed to add a book')
     }
   }
 

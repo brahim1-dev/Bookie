@@ -4,13 +4,13 @@ import AddBook from "./pages/AddBook"
 import EditBook from "./pages/EditBook"
 import BookDetails from "./pages/BookDetails"
 import Layout from "./components/Layout"
-
-
+import {Toaster} from 'react-hot-toast'
 
 
 const App = () => {
   return (
     <Router>
+      <Toaster/>
       <Routes>
         <Route path="/" element={<Layout/>}>
           <Route index element={<Home/>}/>
