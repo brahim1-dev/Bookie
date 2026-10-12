@@ -28,6 +28,23 @@ export const fetchBook = createAsyncThunk('books/fetchBook',
   }
 )
 
+
+export const createBook = createAsyncThunk(
+  'books/createBook', async(bookData, thunkAPI)=>{
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(bookData)
+      })
+      if(!response.ok) throw new Error("Failed to create book")
+        return await response.json()
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message)
+    }
+  }
+)
+
 const initialState = {
   books:[],
   currentBook: null,
@@ -80,6 +97,21 @@ const booksSlice = createSlice ({
       state.currentBook=action.payload
     })
     .addCase(fetchBook.rejected, (state, action)=>{
+      state.isLoading=false;
+      state.isError=true;
+      state.message=action.payload || "Something went wrong"
+    })
+    // Create Book.
+     .addCase(createBook.pending, (state)=>{
+      state.isLoading=true;
+    })
+
+    .addCase(createBook.fulfilled, (state, action)=>{
+      state.isLoading=false;
+      state.isSuccess=true;
+      state.books.unshift(action.payload)
+    })
+    .addCase(createBook.rejected, (state, action)=>{
       state.isLoading=false;
       state.isError=true;
       state.message=action.payload || "Something went wrong"
