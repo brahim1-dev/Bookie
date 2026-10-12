@@ -1,10 +1,23 @@
 import { ArrowLeft } from "lucide-react"
 import { Link } from "react-router-dom"
 import BookForm from "../components/BookForm"
-
-
+import {useDispatch, useSelector} from 'react-redux'
+import {createBook} from '../redux/API/bookSlice'
 
 const AddBook = () => {
+  const dispatch = useDispatch()
+  const {isLoading} = useSelector((state)=>state.book)
+
+  const handleSubmit = async(BookData)=>{
+    const resultAction = await dispatch(createBook(BookData))
+    if(createBook.fulfilled.match(resultAction)){
+      alert("Book Saved")
+    }else{
+      alert(resultAction.payload)
+    }
+  }
+
+
   return (
     <div>
       <div className="max-w-2xl mx-auto animate-in slide-in-from-bottom-4 duration-500">
@@ -14,7 +27,7 @@ const AddBook = () => {
         </div>
         <div className="bg-white p-8 rounded 2xl shadow-md border border-gray-100">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">Add book</h1>
-          <BookForm/>
+          <BookForm onSubmit={handleSubmit} isLoading={isLoading}/>
         </div>
       </div>
     </div>
