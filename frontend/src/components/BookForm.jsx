@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 
 
 const BookForm = ({onSubmit, isLoading, initialData}) => {
-  const [formData, setFormData ] = useState({
-    title:'',
-    author:'',
-    price:'',
-    description:'',
-    coverImage:'',
-    downloadLink:''
-  })
+  const [formData, setFormData ] = useState(() => ({
+    title: initialData?.title || '',
+    author: initialData?.author || '',
+    price: initialData?.price ?? '',
+    description: initialData?.description || '',
+    coverImage: initialData?.coverImage || '',
+    downloadLink: initialData?.downloadLink || ''
+  }))
 
   // console.log(formData)
 
@@ -26,22 +26,6 @@ const BookForm = ({onSubmit, isLoading, initialData}) => {
       ...formData, price:Number(formData.price)
     })
   }
-
-  useEffect(()=>{
-    if(initialData){
-      setFormData({
-        title:initialData.title || '',
-        author:initialData.author || '',
-        price:initialData.price || '',
-        description:initialData.description || '',
-        coverImage:initialData.coverImage || '',
-        downloadLink:initialData.downloadLink || '',
-      })
-
-
-    }
-  }, [initialData])
-
 
 return (
 <form className="space-y-5" onSubmit={handleSubmit}>

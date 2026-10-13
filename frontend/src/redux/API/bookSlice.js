@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const API_URL = "http://localhost:5000/api/books"
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api/books"
 export const fetchBooks = createAsyncThunk('books/fetchBooks',
   async(_, thunkAPI)=>{
     try {
@@ -120,7 +120,10 @@ const booksSlice = createSlice ({
     // Fetch Single Book.
      .addCase(fetchBook.pending, (state)=>{
       state.isLoading=true;
-    })
+       state.isError=false;
+       state.message="";
+       state.currentBook=null;
+     })
 
     .addCase(fetchBook.fulfilled, (state, action)=>{
       state.isLoading=false;

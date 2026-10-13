@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { fetchBook } from "../redux/API/bookSlice"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { ArrowLeft, Calendar, DollarSign, Download, Edit2 , Loader2, User} from "lucide-react"
+import { clearCurrentBook } from "../redux/API/bookSlice"
 
 
 
@@ -10,23 +11,26 @@ const BookDetails = () => {
   const {id} = useParams();
   const dispatch = useDispatch()
   const navigate = useNavigate();
-  const {currentBook, isLoading, isError, message} = useSelector((state)=>state.book)
+  const {currentBook, isLoading, isError} = useSelector((state)=>state.book)
   useEffect(()=>{
   if(id){
   dispatch(fetchBook(id))
 }
-},[id, dispatch])
-
-useEffect(()=>{
-  if(!isError && !currentBook){
-    navigate('/')
+  return () => {
+    dispatch(clearCurrentBook())
   }
-}, [isError, message, currentBook, navigate])
-console.log(currentBook)
-if(isLoading || !currentBook){
-  return <div className="flex flex-col gap-10 justify-center items-center p-4">
-    <Loader2 className="animate-spin text-brand-600 " size={40}/>
-    <p className="text-gray-500 font-medium">Loading...</p>
+  },[id, dispatch])
+
+  useEffect(()=>{
+    if(isError && !currentBook){
+      navigate('/')
+    }
+  }, [isError, currentBook, navigate])
+
+  if(isLoading || !currentBook){
+    return <div className="flex flex-col gap-10 justify-center items-center p-4">
+      <Loader2 className="animate-spin text-brand-600 " size={40}/>
+      <p className="text-gray-500 font-medium">Loading...</p>
   </div> 
 }
 
@@ -49,7 +53,7 @@ return (
       currentBook.coverImage && (
       <div className="w-full md:w-1/3 lg:w-1/4 flex-shrink-0">
         <img className="w-full h-auto rounded-xl shadow-sm object-contain bg-white p-2 border border-gray-100"
-          src={currentBook.coverImage} />
+          src={currentBook.coverImage} alt={`Cover of ${currentBook.title}`} />
       </div>
       )
       }

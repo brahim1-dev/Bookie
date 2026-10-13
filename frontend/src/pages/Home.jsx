@@ -55,8 +55,7 @@ const Home = () => {
             <h3 className="text-3xl font-bold text-gray-900 mb-6">No Books Found</h3>
             <p className="text-gray-500 max-w-md mb-6">We couldn't find any books, the books library is currently empty</p>
             <Link to="/add-book" className="btn btn-primary">Add Your First Book </Link>
-          </div > 
-          No Books Found
+          </div >
         </div>
       ):(
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

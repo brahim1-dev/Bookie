@@ -1,5 +1,8 @@
 import Book from "../models/book.model.js"
 
+const getErrorStatus = (error) => (
+  error.name === "CastError" || error.name === "ValidationError" ? 400 : 500
+)
 
 
 
@@ -10,7 +13,7 @@ export const getAllBooks = async (req, res)=>{
     const books = await Book.find()
     res.status(200).json(books)
   } catch (error) {
-    res.status(500).json({message:error.message})
+    res.status(getErrorStatus(error)).json({message:error.message})
   }
 }
 
@@ -21,11 +24,11 @@ export const getSingleBook =async (req, res)=>{
   try {
     const book = await Book.findById(req.params.id)
     if(!book){
-      return res.status(404).json({message:error.message})
+      return res.status(404).json({message:"Book Not Found"})
     }
     res.status(200).json(book)
   } catch (error) {
-    res.status(500).json({message: error.message})
+    res.status(getErrorStatus(error)).json({message: error.message})
   }
 }
 
@@ -39,7 +42,7 @@ export const postBook = async (req, res)=>{
     const {title, author, price, description, coverImage, downloadLink} = req.body
 
     //check if all fields are filled
-    if(!title || !author || !price || !description){
+    if(!title?.trim() || !author?.trim() || price === undefined || price === null || price === "" || !description?.trim()){
       return res.status(400).json({message: "All fields are required"})
     }
 
@@ -49,7 +52,7 @@ export const postBook = async (req, res)=>{
     })
     res.status(201).json(book)
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(getErrorStatus(error)).json({ message: error.message });
   }
 }
 
@@ -67,7 +70,7 @@ export const putBook = async(req, res)=>{
     }
     res.status(200).json(updatedBook)
   } catch (error) {
-    res.status(500).json({message:error.message})
+    res.status(getErrorStatus(error)).json({message:error.message})
   }
 }
 
@@ -84,6 +87,6 @@ export const deleteBook =async(req, res)=>{
     res.status(200).json({ message: "Book Deleted successfully", _id:delBook._id });
 
   } catch (error) {
-    res.status(500).json({message:error.message})
+    res.status(getErrorStatus(error)).json({message:error.message})
   }
 }

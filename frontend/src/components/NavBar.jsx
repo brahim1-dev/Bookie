@@ -17,7 +17,7 @@ const NavBar = () => {
             </Link>
           </div>
           <div className="flex items-center space-x-4">
-              <Link to="add-book" className={`btn ${location.pathname==="/add-book"?'btn-primary':'btn-secondary'} inline-flex gap-2`}>
+              <Link to="/add-book" className={`btn ${location.pathname==="/add-book"?'btn-primary':'btn-secondary'} inline-flex gap-2`}>
                 <PlusCircle  size={18}/>
                 <span className="hidden sm:inline">Add Book</span>
             </Link>

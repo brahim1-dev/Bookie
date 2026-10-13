@@ -1,51 +1,36 @@
 # Bookie
 
-Bookie is a full-stack web application for browsing a personal library of books. It provides a React interface for viewing a book collection and individual book details, backed by an Express API and MongoDB.
+A full-stack personal library manager for organizing books, tracking prices, and opening optional book download links. Bookie includes a responsive React interface and a REST API backed by MongoDB.
 
-> **Project status:** The book list and book-detail pages are implemented. The Add Book page has a form for book information, but submitting it is not implemented yet. The Edit Book page and the edit/delete controls on book cards are not wired up. The backend API supports create, update, and delete operations.
-
-## Contents
-
-- [Features](#features)
-- [Technology](#technology)
-- [Requirements](#requirements)
-- [Getting started](#getting-started)
-- [Environment configuration](#environment-configuration)
-- [API reference](#api-reference)
-- [Book data](#book-data)
-- [Project structure](#project-structure)
-- [Available commands](#available-commands)
-- [Notes](#notes)
-- [GitHub](#github)
+![Bookie book library](frontend/src/assets/hero.png)
 
 ## Features
 
-- Browse the book collection in a responsive card layout.
-- Open a book's details, including its title, author, price, cover image, description, and date added.
-- Open an optional download link for a book.
-- View an Add Book form with fields for the title, author, price, description, cover image URL, and download link.
-- REST API endpoints for listing, retrieving, creating, updating, and deleting books.
-- MongoDB persistence through Mongoose.
-- Loading, empty-library, and API-error states on the home page, including a retry action when loading fails.
+- Browse books in a responsive card layout.
+- View book details, including the title, author, price, cover, description, and date added.
+- Add books with required details and optional cover-image and download URLs.
+- Edit existing book records.
+- Delete books with a confirmation dialog.
+- Open optional download links hosted by external providers.
+- See loading, empty-library, and API-error states with a retry action.
+- Persist book records in MongoDB through the Express API.
 
-## Technology
+## Built with
 
-| Area | Technologies |
+| Part | Technologies |
 | --- | --- |
-| Frontend | React 19, Vite 8, React Router, Redux Toolkit, React Redux, Tailwind CSS 4, Lucide |
-| Backend | Node.js, Express 5, Mongoose |
+| Frontend | React 19, Vite 8, React Router 7, Redux Toolkit, Tailwind CSS 4, Lucide, React Hot Toast |
+| Backend | Node.js, Express 5, Mongoose 9 |
 | Database | MongoDB |
 
 ## Requirements
 
-- Node.js and npm (use a Node.js version supported by Vite 8).
-- A MongoDB database, either local or hosted.
+- Node.js compatible with Vite 8 and npm.
+- MongoDB, running locally or available through MongoDB Atlas.
 
-## Getting started
+## Run locally
 
-Run the backend and frontend in separate terminals from the repository root.
-
-### 1. Configure MongoDB
+### 1. Configure the backend
 
 Create a `.env` file in the repository root:
 
@@ -54,119 +39,135 @@ MONGO_URI=mongodb://127.0.0.1:27017/bookie
 PORT=5000
 ```
 
-Replace `MONGO_URI` with your MongoDB connection string if you use a hosted database. Keep `.env` private and do not commit credentials.
+Use your MongoDB Atlas connection string for `MONGO_URI` if you are using a hosted database. Keep `.env` private; do not commit database credentials.
 
-### 2. Start the backend
+### 2. Install dependencies
 
-```bash
+From the repository root:
+
+```sh
 npm install
+npm --prefix frontend install
+```
+
+### 3. Start the backend
+
+In one terminal at the repository root:
+
+```sh
 npm run dev
 ```
 
-The API is served at `http://localhost:5000`, with book routes under `/api/books`.
+The API starts at `http://localhost:5000` by default. Set `PORT` in the root `.env` file to use a different port.
 
-### 3. Start the frontend
+### 4. Start the frontend
 
-In a second terminal:
+In a second terminal at the repository root:
 
-```bash
-cd frontend
-npm install
-npm run dev
+```sh
+npm --prefix frontend run dev
 ```
 
-Open the local URL printed by Vite (typically `http://localhost:5173`). The frontend currently requests the API at `http://localhost:5000/api/books`.
+Open the local URL printed by Vite (usually `http://localhost:5173`).
 
-## Environment configuration
+## Configuration
 
-| Variable | Required | Description |
-| --- | --- | --- |
-| `MONGO_URI` | Yes | MongoDB connection string used by Mongoose. |
-| `PORT` | No | The server currently listens on port `5000` regardless of this variable. |
+### Backend environment
 
-## API reference
+| Variable | Required | Default | Description |
+| --- | --- | --- | --- |
+| `MONGO_URI` | Yes | — | MongoDB connection string. The backend exits with an error if it cannot connect. |
+| `PORT` | No | `5000` | Port used by the Express server. |
+
+### Frontend environment
+
+The frontend defaults to `http://localhost:5000/api/books`. To use a different API base URL, create `frontend/.env`:
+
+```env
+VITE_API_URL=https://your-api-host.example/api/books
+```
+
+Restart Vite after changing environment variables. The URL should point to the books resource, not just the server root.
+
+## API
 
 Base URL: `http://localhost:5000/api/books`
 
 | Method | Endpoint | Description |
 | --- | --- | --- |
-| `GET` | `/` | Return all books. |
-| `GET` | `/:id` | Return one book by its MongoDB ID. |
+| `GET` | `/` | List all books. |
+| `GET` | `/:id` | Get one book by MongoDB ID. |
 | `POST` | `/` | Create a book. |
-| `PUT` | `/:id` | Update a book by ID. |
-| `DELETE` | `/:id` | Delete a book by ID. |
+| `PUT` | `/:id` | Update a book. |
+| `DELETE` | `/:id` | Delete a book. |
 
-Example request body for `POST /api/books`:
+### Book fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `title` | String | Yes | Book title. |
+| `author` | String | Yes | Author name. |
+| `price` | String | Yes | Price shown in the interface. |
+| `description` | String | Yes | Book description. |
+| `coverImage` | String | No | URL of the book cover image. |
+| `downloadLink` | String | No | External URL for a download. |
+| `createdAt`, `updatedAt` | Date | Automatic | Mongoose timestamps. |
+
+Example `POST /api/books` request:
 
 ```json
 {
   "title": "The Pragmatic Programmer",
   "author": "Andrew Hunt and David Thomas",
-  "price": "39.99",
+  "price": 39.99,
   "description": "A practical guide to software craftsmanship.",
   "coverImage": "https://example.com/cover.jpg",
   "downloadLink": "https://example.com/book"
 }
 ```
 
-`title`, `author`, `price`, and `description` are required. `coverImage` and `downloadLink` are optional. The download link is stored as a URL; this application does not host or serve book files itself.
-
-## Book data
-
-Each book document contains:
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `title` | String | Yes | Book title. |
-| `author` | String | Yes | Author name. |
-| `price` | String | Yes | Price displayed by the interface. |
-| `description` | String | Yes | Book description. |
-| `coverImage` | String | No | Cover image URL. |
-| `downloadLink` | String | No | External URL for the book download. |
-| `createdAt`, `updatedAt` | Date | Automatic | Timestamps generated by Mongoose. |
+The backend requires a non-empty title, author, and description, plus a price. Cover and download URLs are optional. Bookie stores the download URL; it does not host or serve book files.
 
 ## Project structure
 
 ```text
 Bookie/
 ├── backend/
-│   ├── config/          # MongoDB connection
-│   ├── controllers/     # Book API handlers
-│   ├── models/          # Mongoose schemas
-│   ├── routes/          # Express routes
-│   └── server.js        # API server entry point
+│   ├── config/             # MongoDB connection
+│   ├── controllers/        # Book CRUD handlers
+│   ├── models/             # Mongoose book schema
+│   ├── routes/             # REST API routes
+│   └── server.js           # Express startup
 ├── frontend/
 │   ├── src/
-│   │   ├── components/  # Shared layout, book card, and book form
-│   │   ├── pages/       # Home, book details, add-book, and edit-book pages
-│   │   └── redux/       # Store and asynchronous book API state
+│   │   ├── components/     # Shared UI, book form, cards, and dialog
+│   │   ├── pages/          # Library, details, add, and edit screens
+│   │   └── redux/          # Store and book API state
 │   └── package.json
-├── .env                 # Local configuration (create this; do not commit)
-└── package.json         # Backend scripts and dependencies
+├── .env                    # Local backend configuration (not committed)
+└── package.json            # Backend scripts and dependencies
 ```
 
-## Available commands
+## Useful commands
 
-Run these from the repository root unless noted otherwise.
+Run backend commands from the repository root and frontend commands using `npm --prefix frontend`.
 
 | Command | Description |
 | --- | --- |
-| `npm run dev` | Start the backend with Node's watch mode. |
+| `npm run dev` | Start the backend with Node watch mode. |
 | `npm start` | Start the backend normally. |
-| `cd frontend; npm run dev` | Start the Vite development server (PowerShell). |
-| `cd frontend; npm run build` | Build the frontend for production (PowerShell). |
-| `cd frontend; npm run lint` | Run the frontend ESLint checks (PowerShell). |
-| `cd frontend; npm run preview` | Preview the production frontend build (PowerShell). |
+| `npm --prefix frontend run dev` | Start the Vite development server. |
+| `npm --prefix frontend run build` | Build the frontend for production. |
+| `npm --prefix frontend run preview` | Preview the production build locally. |
+| `npm --prefix frontend run lint` | Run ESLint across the frontend. |
 
-## Notes
+## Troubleshooting
 
-- MongoDB must be available and `MONGO_URI` must be configured before starting the backend.
-- The frontend's API base URL is currently set to `http://localhost:5000/api/books` in `frontend/src/redux/API/bookSlice.js`.
-- The Add Book page currently displays the book form, but the form does not yet submit data to the API. The Edit Book page is still a placeholder, and the edit/delete controls on book cards are not connected. The backend has create, update, and delete endpoints, but the full create/edit/delete interface is not yet implemented.
-- Download URLs point to external resources. Whether a download opens or is saved depends on the URL and the hosting provider.
+- **The API cannot connect to MongoDB:** Confirm MongoDB is running and `MONGO_URI` is correct in the repository-root `.env` file.
+- **The frontend cannot reach the API:** Start the backend and confirm `VITE_API_URL` (if configured) points to the correct `/api/books` URL.
+- **A book cannot be saved:** Check that title, author, price, and description are provided. The cover and download URLs can be left blank.
+- **A download link does not open or download:** The link is served by an external host, so its availability and download behavior depend on that provider.
 
-## GitHub
+## Repository
 
-Project repository: [github.com/brahim1-dev/Bookie](https://github.com/brahim1-dev/Bookie)
-
-GitHub profile: [github.com/brahim1-dev](https://github.com/brahim1-dev)
+[brahim1-dev/Bookie on GitHub](https://github.com/brahim1-dev/Bookie)

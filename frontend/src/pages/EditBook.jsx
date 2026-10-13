@@ -1,4 +1,4 @@
-import { ArrowLeft, Book, BookDashed  } from "lucide-react"
+import { ArrowLeft, Loader2 } from "lucide-react"
 import BookForm from "../components/BookForm"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
@@ -29,7 +29,6 @@ const EditBook = () => {
       navigate('/')
     }
   }, [isError, message, currentBook, navigate])
-  console.log(currentBook)
   const handleSubmit = async (bookData)=>{
     const resultAction = await dispatch(updateBook({id, bookData}))
     if(updateBook.fulfilled.match(resultAction)){
@@ -49,7 +48,14 @@ const EditBook = () => {
         </div>
         <div className="bg-white p-8 rounded 2xl shadow-md border border-gray-100">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">Edit Book</h1>
-          <BookForm initialData={currentBook} onSubmit={handleSubmit} isLoading={isLoading}/>
+          {isLoading && !currentBook ? (
+            <div className="flex items-center justify-center gap-3 py-8 text-gray-500" role="status">
+              <Loader2 className="animate-spin text-brand-600" size={24}/>
+              Loading book...
+            </div>
+          ) : currentBook ? (
+            <BookForm key={currentBook._id} initialData={currentBook} onSubmit={handleSubmit} isLoading={isLoading}/>
+          ) : null}
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ const BookCard = ({book, onDelete}) => {
       <div className="h-48 w-full bg-gray-100 flex-shrink-0 overflow-hidden relative">
         {
           book.coverImage?(
-          <img className="w-full h-full object-contain bg-white p-2 transition-transform duration-500 group-hover:scale-105" src={book.coverImage} alt="Cover of book"/>):(
+          <img className="w-full h-full object-contain bg-white p-2 transition-transform duration-500 group-hover:scale-105" src={book.coverImage} alt={`Cover of ${book.title}`}/>):(
           <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 bg-brand-50/50" >
             <span>No Cover Image Available</span>
           </div>
@@ -23,7 +23,7 @@ const BookCard = ({book, onDelete}) => {
           </div>
         </div>
         <p className="text-gray-500 font-medium mb-3 text-sm">By<span>{book.author}</span></p>
-        <p className="text-gray-600 text-sm line-clamp-3 mb-4">By{book.description}</p>
+        <p className="text-gray-600 text-sm line-clamp-3 mb-4">{book.description}</p>
       </div>
       <div className="px-3 py-3 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between gap-1">
         <div className="flex min-w-0 items-center gap-2">
