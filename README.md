@@ -70,6 +70,53 @@ npm --prefix frontend run dev
 
 Open the local URL printed by Vite (usually `http://localhost:5173`).
 
+## Deploy online
+
+Bookie can run as a **single Node.js web service**: in production, Express serves both the API and the built React app. The steps below use Render for the web service and MongoDB Atlas for the database; the same build and start commands can be used with another Node.js host.
+
+### 1. Create a MongoDB Atlas database
+
+1. Create an Atlas cluster and a database user with a strong password.
+2. Configure Atlas Network Access to allow connections from your hosting provider. If the provider does not offer stable outbound IP addresses, you may need to allow `0.0.0.0/0`; use a strong database password and restrict access where possible.
+3. Copy the Atlas connection string. Replace its password placeholder and include the database name `bookie`, for example:
+
+   ```text
+   mongodb+srv://<username>:<password>@<cluster-host>/bookie?retryWrites=true&w=majority
+   ```
+
+### 2. Create the web service
+
+1. Push the project to GitHub and create a new **Web Service** from the `brahim1-dev/Bookie` repository in Render.
+2. Leave the Root Directory blank so Render uses the repository root.
+3. Configure the service:
+
+   | Setting | Value |
+   | --- | --- |
+   | Runtime | Node |
+   | Build Command | `npm run build` |
+   | Start Command | `npm start` |
+
+4. Add these environment variables in the hosting dashboard:
+
+   | Variable | Value |
+   | --- | --- |
+   | `MONGO_URI` | Your complete MongoDB Atlas connection string. |
+   | `NODE_ENV` | `production` |
+   | `VITE_API_URL` | `/api/books` |
+
+   Do not set `PORT` manually on Render; the service provides it. `VITE_API_URL` is used during the frontend build, and `/api/books` makes the deployed app send API requests to the same origin.
+
+5. Deploy the service. The build installs the frontend dependencies and creates `frontend/dist`; the start command connects to MongoDB and starts Express, which serves the API and frontend from the same service.
+
+### 3. Verify the deployment
+
+- Open the service URL to check that the Bookie interface loads.
+- Open `<your-service-url>/api/books` to check that the API responds with the book list (an empty JSON array is expected before books are added).
+- Add a book, refresh the page, and verify that it remains in the library.
+- Open a book details or edit URL directly, then refresh, to verify that frontend routes are served correctly.
+
+If deployment fails, check the service build/runtime logs, confirm the Atlas connection string and Network Access settings, and verify that `NODE_ENV` and `VITE_API_URL` were set before the most recent build.
+
 ## Configuration
 
 ### Backend environment
