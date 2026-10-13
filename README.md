@@ -2,7 +2,7 @@
 
 A full-stack personal library manager for organizing books, tracking prices, and opening optional book download links. Bookie includes a responsive React interface and a REST API backed by MongoDB.
 
-![Bookie book library](frontend/src/assets/hero.png)
+![Bookie library dashboard](frontend/src/assets/image.png)
 
 ## Features
 
