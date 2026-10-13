@@ -1,7 +1,7 @@
 import { BookText, Download, Edit, Trash2 } from "lucide-react"
 import { Link } from "react-router-dom"
 
-const BookCard = ({book}) => {
+const BookCard = ({book, onDelete}) => {
   return (
     <div className="card flex flex-col group relative bg-white">
       {/* Cover Image */}
@@ -40,7 +40,7 @@ const BookCard = ({book}) => {
           <Link to={ `/edit/${book._id}`} className="shrink-0 p-1 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
             <Edit size={14}></Edit>
           </Link>
-          <button className="shrink-0 p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+          <button type="button" onClick={() => onDelete(book)} className="shrink-0 p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" aria-label={`Delete ${book.title}`}>
             <Trash2 size={14}></Trash2>
           </button>
         </div>

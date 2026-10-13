@@ -1,17 +1,39 @@
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBooks } from "../redux/API/bookSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {Link} from "react-router-dom"
 import BookCard from "../components/BookCard";
+import Model from "../components/Model";
+import { deleteBook } from "../redux/API/bookSlice";
+import toast from "react-hot-toast";
 
 
 const Home = () => {
   const dispatch = useDispatch();
   const { books, isLoading, isError, message } = useSelector((state) => state.book)
+  const [bookToDelete, setBookToDelete] = useState(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
     dispatch(fetchBooks());
   }, [dispatch]);
+
+  const handleDelete = async () => {
+    if (!bookToDelete) return
+
+    setIsDeleting(true)
+    try {
+      const resultAction = await dispatch(deleteBook(bookToDelete._id))
+      if (deleteBook.fulfilled.match(resultAction)) {
+        toast.success("Book deleted successfully")
+        setBookToDelete(null)
+      } else {
+        toast.error(resultAction.payload || "Failed to delete book")
+      }
+    } finally {
+      setIsDeleting(false)
+    }
+  }
 
   return (
     <div className="">
@@ -41,12 +63,27 @@ const Home = () => {
           {
             books.map((book)=>(
               <div key={book._id}>
-                <BookCard book={book}/>
+                <BookCard book={book} onDelete={setBookToDelete}/>
               </div>
               )
             )
           }
         </div>
+      )}
+      {bookToDelete && (
+        <Model title="Delete book?" onClose={() => setBookToDelete(null)}>
+          <p className="text-gray-600">
+            Are you sure you want to delete <span className="font-semibold text-gray-900">{bookToDelete.title}</span>? This action cannot be undone.
+          </p>
+          <div className="mt-6 flex justify-end gap-3">
+            <button type="button" className="btn btn-secondary" onClick={() => setBookToDelete(null)} disabled={isDeleting}>
+              Cancel
+            </button>
+            <button type="button" className="btn btn-danger" onClick={handleDelete} disabled={isDeleting}>
+              {isDeleting ? "Deleting..." : "Delete Book"}
+            </button>
+          </div>
+        </Model>
       )}
     </div>
   );
