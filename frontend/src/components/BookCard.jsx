@@ -37,7 +37,7 @@ const BookCard = ({book}) => {
           }
         </div>
         <div className="flex shrink-0 items-center gap-0.5">
-          <Link className="shrink-0 p-1 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+          <Link to={ `/edit/${book._id}`} className="shrink-0 p-1 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
             <Edit size={14}></Edit>
           </Link>
           <button className="shrink-0 p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
