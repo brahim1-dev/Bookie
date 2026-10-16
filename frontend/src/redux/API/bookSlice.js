@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api/books"
+const API_URL = import.meta.env.VITE_API_URL || "https://bookie-4m7s.onrender.com/api/books"
 export const fetchBooks = createAsyncThunk('books/fetchBooks',
   async(_, thunkAPI)=>{
     try {
